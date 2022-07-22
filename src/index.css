@@ -123,5 +123,19 @@ select {
 /* tailwind */
 
 body {
-    background-color: #2F3847;
+    background-color: #2f3847;
+}
+
+.login-form > input {
+    margin: 5px 0px;
+}
+
+.login-submit-btn {
+    background: #bce4fd;
+    transition: 0.3s;
+}
+
+.login-submit-btn:hover {
+    background: #1b79dd;
+    color: white;
 }

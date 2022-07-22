@@ -14,9 +14,7 @@ export default function Navbar() {
                 <Link to={"/sign-in"} className="auth-btn self-center font-bold text-xl hover:text-sp1">
                     Login
                 </Link>
-                <Link to={"/sign-out"} className="auth-btn self-center font-bold text-xl hover:text-sp1">
-                    Log out
-                </Link>
+                <a className="auth-btn self-center font-bold text-xl hover:text-sp1 cursor-pointer">Log out</a>
             </div>
         </nav>
     );

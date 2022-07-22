@@ -6,7 +6,7 @@ import "./index.css";
 
 //auth
 import SignIn from "./components/auth/SignIn";
-import SignOut from "./components/auth/SignOut";
+import SignUp from "./components/auth/SignUp";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
@@ -14,7 +14,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Routes>
                 <Route path="/" element={<App />}>
                     <Route path="/sign-in" element={<SignIn />}></Route>
-                    <Route path="/sign-out" element={<SignOut />}></Route>
+                    <Route path="/sign-up" element={<SignUp />}></Route>
                 </Route>
             </Routes>
         </BrowserRouter>
