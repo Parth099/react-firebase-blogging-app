@@ -7,7 +7,7 @@ This will be a place for <Outlet> and the Auth/Storage Providers
 */
 function App() {
     return (
-        <div>
+        <div className="bg-sp3">
             <Navbar />
             <Outlet />
         </div>

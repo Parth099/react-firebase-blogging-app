@@ -121,3 +121,7 @@ select {
 @tailwind components;
 @tailwind utilities;
 /* tailwind */
+
+body {
+    background-color: #2F3847;
+}
