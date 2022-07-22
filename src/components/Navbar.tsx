@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 import useModal from "../hooks/useModal";
@@ -12,6 +13,14 @@ export default function Navbar() {
     const authContext = useAuth();
 
     const isLoggedIn = authContext?.currentUser;
+
+    //give the user to close modal if they click outside of it
+    const handleOverlayClicks = (e: React.MouseEvent<HTMLDivElement>) => {
+        let containsOverlayClass = (e.target as Element).classList.contains("overlay");
+        if (containsOverlayClass) {
+            closeLogOutModal();
+        }
+    };
 
     return (
         <nav className="flex justify-between p-4 text-sp1 border-t-4 border-sp1 border-b-sp2 border-b-2 shadow-xl bg-sp4">
@@ -30,7 +39,7 @@ export default function Navbar() {
                     </a>
                 )}
                 {logOutModalStatus != 0 && (
-                    <div className="overlay">
+                    <div className="overlay" onClick={handleOverlayClicks}>
                         <Logout closeLogOutModal={closeLogOutModal} />
                     </div>
                 )}
