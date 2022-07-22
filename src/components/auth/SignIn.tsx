@@ -1,9 +1,14 @@
-import React from "react";
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 
 //this component will handle sign in
 
 export default function SignIn() {
+    //dom pointers
+    const emailRef = useRef<HTMLInputElement | null>(null);
+    const pwRef = useRef<HTMLInputElement | null>(null);
+
+    //event when submit is hit
     const handleSumbit = (e: React.FormEvent) => {
         e.preventDefault(); //do not refresh page
     };
@@ -21,6 +26,7 @@ export default function SignIn() {
                         id="email"
                         className="text-lg py-2 px-2 bg-sp3 text-white border-b-2 border-b-white"
                         placeholder="Type in email"
+                        ref={emailRef}
                     />
                     <label htmlFor="password" className="text-sp1 text-xl font-bold">
                         Password
@@ -30,6 +36,7 @@ export default function SignIn() {
                         id="password"
                         className="text-lg py-2 px-2 bg-sp3 text-white border-b-2 border-b-white"
                         placeholder="Type in password"
+                        ref={pwRef}
                     />
                     <button type="submit" className="login-submit-btn mt-5 p-2 text-2xl font-bold ">
                         Sign in
