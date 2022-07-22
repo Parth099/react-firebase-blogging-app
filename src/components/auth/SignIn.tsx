@@ -26,14 +26,18 @@ export default function SignIn() {
         if (!signIn) return; //ts things
 
         //attempt a sign-in
-        signIn(email, password).catch((err) => {
-            console.log(err);
-        });
+        signIn(email, password)
+            .then(() => {
+                console.log("signed in");
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     return (
         <section className="w-full mt-12 flex justify-center">
-            <div className="w-176 bg-sp4 p-4 rounded-lg shadow-lg">
+            <div className="w-176 bg-sp4 px-4 py-8 rounded-lg shadow-lg">
                 <h2 className="header-font text-sp1 text-3xl pb-2 border-b-2 border-b-sp1">Login</h2>
                 <form className="login-form flex flex-col mt-6" onSubmit={handleSumbit}>
                     <label htmlFor="email" className="text-sp1 text-xl font-bold">

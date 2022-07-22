@@ -8,8 +8,32 @@ export default function SignUp() {
     const pwRef = useRef<HTMLInputElement | null>(null);
     const confirmPwRef = useRef<HTMLInputElement | null>(null);
 
+    const authContext = useAuth();
+
     const handleSumbit = (e: React.FormEvent) => {
-        e.preventDefault(); //do not refresh page
+        //prevent refresh
+        e.preventDefault();
+
+        const email = emailRef.current?.value;
+        const pw = pwRef.current?.value;
+        const confpw = confirmPwRef.current?.value;
+
+        //MUST fill in each field
+        if (!email || !pw || !confpw) return;
+
+        //passwords must be the same
+        if (pw != confpw) return;
+
+        //at this point we can attempt to genrate an account
+        if (!authContext?.createAccount) return;
+
+        authContext
+            .createAccount(email, pw)
+            .then(() => {
+                //do some navigation in here
+                console.log("acc gen");
+            })
+            .catch((err) => console.log(err));
     };
 
     return (
@@ -26,6 +50,7 @@ export default function SignUp() {
                         className="text-lg py-2 px-2 bg-sp3 text-white border-b-2 border-b-white"
                         placeholder="Type in email"
                         ref={emailRef}
+                        required={true}
                     />
                     <label htmlFor="password" className="text-sp1 text-xl font-bold">
                         Password
@@ -36,6 +61,7 @@ export default function SignUp() {
                         className="text-lg py-2 px-2 bg-sp3 text-white border-b-2 border-b-white"
                         placeholder="Type in password"
                         ref={pwRef}
+                        required={true}
                     />
                     <label htmlFor="password-conf" className="text-sp1 text-xl font-bold">
                         Confirm Password
@@ -46,6 +72,7 @@ export default function SignUp() {
                         className="text-lg py-2 px-2 bg-sp3 text-white border-b-2 border-b-white"
                         placeholder="Type in password"
                         ref={confirmPwRef}
+                        required={true}
                     />
                     <button type="submit" className="login-submit-btn mt-5 p-2 text-2xl font-bold ">
                         Sign Up
