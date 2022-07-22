@@ -8,9 +8,27 @@ export default function SignIn() {
     const emailRef = useRef<HTMLInputElement | null>(null);
     const pwRef = useRef<HTMLInputElement | null>(null);
 
+    const authContext = useAuth();
     //event when submit is hit
     const handleSumbit = (e: React.FormEvent) => {
         e.preventDefault(); //do not refresh page
+
+        //fetch pointer values
+        const email = emailRef.current?.value;
+        const password = pwRef.current?.value;
+
+        //both values are REQUIRED
+        if (!email || !password) return;
+
+        //use context's signin function from auth
+        const signIn = authContext?.signIn;
+
+        if (!signIn) return; //ts things
+
+        //attempt a sign-in
+        signIn(email, password).catch((err) => {
+            console.log(err);
+        });
     };
 
     return (
@@ -27,6 +45,7 @@ export default function SignIn() {
                         className="text-lg py-2 px-2 bg-sp3 text-white border-b-2 border-b-white"
                         placeholder="Type in email"
                         ref={emailRef}
+                        required={true}
                     />
                     <label htmlFor="password" className="text-sp1 text-xl font-bold">
                         Password
@@ -37,6 +56,7 @@ export default function SignIn() {
                         className="text-lg py-2 px-2 bg-sp3 text-white border-b-2 border-b-white"
                         placeholder="Type in password"
                         ref={pwRef}
+                        required={true}
                     />
                     <button type="submit" className="login-submit-btn mt-5 p-2 text-2xl font-bold ">
                         Sign in
