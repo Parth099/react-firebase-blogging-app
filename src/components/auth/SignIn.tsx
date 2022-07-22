@@ -1,8 +1,8 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../contexts/authContext";
 
 //this component will handle sign in
-
 export default function SignIn() {
     //dom pointers
     const emailRef = useRef<HTMLInputElement | null>(null);

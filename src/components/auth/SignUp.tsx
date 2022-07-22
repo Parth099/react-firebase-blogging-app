@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../contexts/authContext";
 
 export default function SignUp() {
     //pointers to DOM
