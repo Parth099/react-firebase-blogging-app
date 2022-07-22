@@ -124,6 +124,7 @@ select {
 
 body {
     background-color: #2f3847;
+    z-index: 0;
 }
 
 .login-form > input {
@@ -141,3 +142,29 @@ body {
 }
 
 /* color selection : https://colorhunt.co/palette/2228322f3847e7a117c57f1e */
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100vh;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.model-selection {
+    width: 100%;
+    border: 3px solid white;
+    padding: 3px;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.model-selection:hover {
+    border-color: #e7a117;
+    color: #e7a117;
+}

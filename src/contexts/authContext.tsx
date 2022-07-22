@@ -5,6 +5,7 @@ import {
     createUserWithEmailAndPassword,
     getAuth,
     onAuthStateChanged,
+    signOut,
     signInWithEmailAndPassword,
     User as FirebaseUser,
     UserCredential,
@@ -21,6 +22,7 @@ interface AuthContextObject {
     currentUser: FirebaseUser | null; //allow user to be null for conditional rendering
     signIn: EmailPasswordPromise;
     createAccount: EmailPasswordPromise;
+    logOut: () => Promise<void>;
 }
 
 type AuthContextType = AuthContextObject | null;
@@ -60,10 +62,15 @@ export function AuthProvider({ children }: ReactChildren) {
         return createUserWithEmailAndPassword(auth, email, password);
     };
 
+    const logOut = () => {
+        return signOut(auth);
+    };
+
     const value = {
         currentUser,
         signIn,
         createAccount,
+        logOut,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
