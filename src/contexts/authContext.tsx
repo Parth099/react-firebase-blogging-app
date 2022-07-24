@@ -23,6 +23,7 @@ interface AuthContextObject {
     signIn: EmailPasswordPromise;
     createAccount: EmailPasswordPromise;
     logOut: () => Promise<void>;
+    firstLoadCompleted: boolean;
 }
 
 type AuthContextType = AuthContextObject | null;
@@ -43,11 +44,12 @@ export function AuthProvider({ children }: ReactChildren) {
     const auth = getAuth(app);
 
     const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
+    const [firstLoadCompleted, setFirstLoadCompleted] = useState(false);
 
     useEffect(() => {
         const unsub = onAuthStateChanged(auth, (firebaseUser) => {
-            console.log(firebaseUser);
             setCurrentUser(firebaseUser);
+            setFirstLoadCompleted(true);
         });
 
         return unsub;
@@ -71,6 +73,7 @@ export function AuthProvider({ children }: ReactChildren) {
         signIn,
         createAccount,
         logOut,
+        firstLoadCompleted,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

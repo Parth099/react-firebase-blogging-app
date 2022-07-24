@@ -21,7 +21,10 @@ export default function Navbar() {
 
     //used to force a sign in
     useEffect(() => {
-        //current path (url)
+        //if firebase has not even loaded the session do not force a sign in
+        if (!authContext?.firstLoadCompleted) {
+            return;
+        }
         const pwd = location.pathname;
         if (!isLoggedIn && pwd != "/sign-in" && pwd != "/sign-up") {
             navigate("/sign-in");
