@@ -168,3 +168,19 @@ body {
     border-color: #e7a117;
     color: #e7a117;
 }
+
+.input-field {
+    font-size: 1.125rem /* 18px */;
+    line-height: 1.75rem /* 28px */;
+    padding: 0.5rem;
+    background-color: rgb(47 56 71);
+    color: white;
+    border-bottom: 2px solid white;
+}
+
+.input-field:focus,
+.input-field:hover {
+    border: none;
+    border-bottom: 2px solid #e7a117;
+    outline: none;
+}

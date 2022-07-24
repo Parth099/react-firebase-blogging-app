@@ -46,25 +46,11 @@ export default function SignIn() {
                     <label htmlFor="email" className="text-sp1 text-xl font-bold">
                         Email
                     </label>
-                    <input
-                        type="email"
-                        id="email"
-                        className="text-lg py-2 px-2 bg-sp3 text-white border-b-2 border-b-white"
-                        placeholder="Type in email"
-                        ref={emailRef}
-                        required={true}
-                    />
+                    <input type="email" id="email" className="input-field" placeholder="Type in email" ref={emailRef} required={true} />
                     <label htmlFor="password" className="text-sp1 text-xl font-bold">
                         Password
                     </label>
-                    <input
-                        type="password"
-                        id="password"
-                        className="text-lg py-2 px-2 bg-sp3 text-white border-b-2 border-b-white"
-                        placeholder="Type in password"
-                        ref={pwRef}
-                        required={true}
-                    />
+                    <input type="password" id="password" className="input-field" placeholder="Type in password" ref={pwRef} required={true} />
                     <button type="submit" className="login-submit-btn mt-5 p-2 text-2xl font-bold ">
                         Sign in
                     </button>

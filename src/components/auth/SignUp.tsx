@@ -45,32 +45,18 @@ export default function SignUp() {
                     <label htmlFor="email" className="text-sp1 text-xl font-bold">
                         Email
                     </label>
-                    <input
-                        type="email"
-                        id="email"
-                        className="text-lg py-2 px-2 bg-sp3 text-white border-b-2 border-b-white"
-                        placeholder="Type in email"
-                        ref={emailRef}
-                        required={true}
-                    />
+                    <input type="email" id="email" className="input-field" placeholder="Type in email" ref={emailRef} required={true} />
                     <label htmlFor="password" className="text-sp1 text-xl font-bold">
                         Password
                     </label>
-                    <input
-                        type="password"
-                        id="password"
-                        className="text-lg py-2 px-2 bg-sp3 text-white border-b-2 border-b-white"
-                        placeholder="Type in password"
-                        ref={pwRef}
-                        required={true}
-                    />
+                    <input type="password" id="password" className="input-field" placeholder="Type in password" ref={pwRef} required={true} />
                     <label htmlFor="password-conf" className="text-sp1 text-xl font-bold">
                         Confirm Password
                     </label>
                     <input
                         type="password"
                         id="password-conf"
-                        className="text-lg py-2 px-2 bg-sp3 text-white border-b-2 border-b-white"
+                        className="input-field"
                         placeholder="Type in password"
                         ref={confirmPwRef}
                         required={true}
