@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext";
 
 export default function SignUp() {
@@ -9,6 +9,7 @@ export default function SignUp() {
     const confirmPwRef = useRef<HTMLInputElement | null>(null);
 
     const authContext = useAuth();
+    const navigate = useNavigate();
 
     const handleSumbit = (e: React.FormEvent) => {
         //prevent refresh
@@ -31,7 +32,7 @@ export default function SignUp() {
             .createAccount(email, pw)
             .then(() => {
                 //do some navigation in here
-                console.log("acc gen");
+                navigate("/");
             })
             .catch((err) => console.log(err));
     };

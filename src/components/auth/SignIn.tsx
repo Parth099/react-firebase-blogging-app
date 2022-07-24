@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext";
 
 //this component will handle sign in
@@ -9,6 +9,8 @@ export default function SignIn() {
     const pwRef = useRef<HTMLInputElement | null>(null);
 
     const authContext = useAuth();
+    const navigate = useNavigate();
+
     //event when submit is hit
     const handleSumbit = (e: React.FormEvent) => {
         e.preventDefault(); //do not refresh page
@@ -29,6 +31,7 @@ export default function SignIn() {
         signIn(email, password)
             .then(() => {
                 console.log("signed in");
+                navigate("/"); //navigate to home on successful login
             })
             .catch((err) => {
                 console.log(err);
