@@ -43,11 +43,11 @@ export default function SignIn() {
             <div className="w-176 bg-sp4 px-4 py-8 rounded-lg shadow-lg">
                 <h2 className="header-font text-sp1 text-3xl pb-2 border-b-2 border-b-sp1">Login</h2>
                 <form className="login-form flex flex-col mt-6" onSubmit={handleSumbit}>
-                    <label htmlFor="email" className="text-sp1 text-xl font-bold">
+                    <label htmlFor="email" className="std-label">
                         Email
                     </label>
                     <input type="email" id="email" className="input-field" placeholder="Type in email" ref={emailRef} required={true} />
-                    <label htmlFor="password" className="text-sp1 text-xl font-bold">
+                    <label htmlFor="password" className="std-label">
                         Password
                     </label>
                     <input type="password" id="password" className="input-field" placeholder="Type in password" ref={pwRef} required={true} />

@@ -55,12 +55,12 @@ export default function Navbar() {
                 )}
                 {isLoggedIn /* render if  logged in */ && (
                     <>
-                        <a className="auth-btn self-center font-bold text-xl hover:text-sp1 cursor-pointer" onClick={openLogOutModal}>
-                            Log out
-                        </a>
                         <Link to={"/create-blog-post"} className="auth-btn self-center font-bold text-xl hover:text-sp1">
                             Create a Blog Post
                         </Link>
+                        <a className="auth-btn self-center font-bold text-xl hover:text-sp1 cursor-pointer" onClick={openLogOutModal}>
+                            Log out
+                        </a>
                     </>
                 )}
                 {logOutModalStatus != 0 && (
