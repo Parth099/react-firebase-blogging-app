@@ -191,8 +191,25 @@ body {
 }
 
 .std-label {
-    font-size: 1.125rem /* 18px */;
+    font-size: 1.5rem /* 18px */;
     line-height: 1.75rem /* 28px */;
     font-weight: 800;
     color: #e7a117;
+}
+
+.tags-collection {
+    min-height: 40px;
+}
+
+.tag-element {
+    min-width: 20px;
+    color: white;
+    font-weight: 700;
+    background-color: #1b79dd;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 5px;
+    margin-right: 5px;
+    padding: 4px 8px;
+    border-radius: 30px;
 }
