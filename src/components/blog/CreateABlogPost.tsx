@@ -1,6 +1,11 @@
 import React, { useRef, useState } from "react";
 import TagsField from "./TagsField";
 
+//db imports
+import { database } from "../../../firebase-config";
+import { collection, addDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/authContext";
 /*
 component used to add a new blog post to the db
 
@@ -17,6 +22,8 @@ _______________________________
 */
 
 export default function CreateABlogPost() {
+    const authContext = useAuth();
+
     //pointers for html text collection
     const titleRef = useRef<HTMLTextAreaElement | null>(null);
     const contentRef = useRef<HTMLTextAreaElement | null>(null);
@@ -45,7 +52,51 @@ export default function CreateABlogPost() {
         setBlogTags(newTags);
     };
 
-    const handleBlogPostCreation = (e: React.MouseEvent) => {};
+    //blocks the spam of "save to db" requests
+    const [sendingToDB, setSendingToDB] = useState<boolean>(false);
+
+    const navigate = useNavigate();
+
+    const handleBlogPostCreation = (e: React.MouseEvent) => {
+        //collect information
+        const title = titleRef.current?.value;
+        const content = contentRef.current?.value;
+
+        //if a db request is already being sent
+        if (sendingToDB) return;
+
+        //all fields MUST be filled
+        if (!title || !content || blogTags.length === 0) return;
+
+        const createdBy = authContext?.currentUser?.email;
+        if (!createdBy) return;
+
+        const TIMESTAMP = new Date();
+
+        const collectionRef = collection(database, "main:blogs");
+
+        setSendingToDB(true);
+        //promise.then().catch().then()
+        //this pattern allows me to catch errors and also commit an action based on sucess or failure
+        addDoc(collectionRef, {
+            title,
+            content,
+            blogTags,
+            created: TIMESTAMP,
+            edited: TIMESTAMP,
+            createdBy,
+        })
+            .then(() => {
+                //reroute to profile page (not been created yet)
+                //navigate("/");
+                console.log("submitted");
+            })
+            .catch((e) => console.error(e))
+            .then(() => {
+                //request is finished loading
+                setSendingToDB(false);
+            });
+    };
     const handleBlogPostCancel = (e: React.MouseEvent) => {};
 
     return (
@@ -60,7 +111,7 @@ export default function CreateABlogPost() {
                     <label htmlFor="blog-content" className="std-label mb-2 mt-3">
                         Blog Content
                     </label>
-                    <textarea id="blog-content" className="input-field" rows={6} ref={contentRef} />
+                    <textarea id="blog-content" className="input-field whitespace-pre-wrap" rows={6} ref={contentRef} />
                     <label htmlFor="blog-tags" className="std-label mb-2 mt-3">
                         Tags
                     </label>
