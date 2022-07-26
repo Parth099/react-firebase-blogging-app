@@ -63,7 +63,7 @@ export default function Navbar() {
                         </a>
                     </>
                 )}
-                {logOutModalStatus != 0 && (
+                {logOutModalStatus && (
                     <div className="overlay" onClick={handleOverlayClicks}>
                         <Logout closeLogOutModal={closeLogOutModal} />
                     </div>

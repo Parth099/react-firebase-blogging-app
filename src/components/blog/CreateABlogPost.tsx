@@ -6,6 +6,8 @@ import { database } from "../../../firebase-config";
 import { collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext";
+import useModal from "../../hooks/useModal";
+import CancelCreationModal from "./CancelCreationModal";
 /*
 component used to add a new blog post to the db
 
@@ -22,6 +24,7 @@ _______________________________
 */
 
 export default function CreateABlogPost() {
+    //required for obtaining the username of the person that submitted the blog post
     const authContext = useAuth();
 
     //pointers for html text collection
@@ -97,7 +100,12 @@ export default function CreateABlogPost() {
                 setSendingToDB(false);
             });
     };
-    const handleBlogPostCancel = (e: React.MouseEvent) => {};
+
+    const cancelCreationOfBlogPost = () => {
+        navigate("/"); //change to profile later
+    };
+
+    const [cancelModalStatus, cancelModalOpen, cancelModalClose] = useModal();
 
     return (
         <div className="create-blog flex justify-center">
@@ -121,9 +129,10 @@ export default function CreateABlogPost() {
                     <button className="px-6 py-2 bg-sp1 mt-2 rounded-sm font-bold hover:bg-yellow-500" onClick={handleBlogPostCreation}>
                         Submit Post
                     </button>
-                    <button className="px-6 py-2 bg-red-600 mt-2 rounded-sm font-bold hover:bg-red-500" onClick={handleBlogPostCancel}>
+                    <button className="px-6 py-2 bg-red-600 mt-2 rounded-sm font-bold hover:bg-red-500" onClick={cancelModalOpen}>
                         Cancel
                     </button>
+                    {cancelModalStatus && <CancelCreationModal closeModal={cancelModalClose} cancelCreation={cancelCreationOfBlogPost} />}
                 </div>
             </section>
         </div>
