@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 import { app } from "../../firebase-config";
 import {
@@ -10,11 +10,9 @@ import {
     User as FirebaseUser,
     UserCredential,
 } from "firebase/auth";
+import { Nullable, ReactChildren } from "./models";
 
 //boring TS Typing area
-interface ReactChildren {
-    children: React.ReactNode;
-}
 
 type EmailPasswordPromise = (a: string, b: string) => Promise<UserCredential>;
 
@@ -26,10 +24,8 @@ interface AuthContextObject {
     firstLoadCompleted: boolean;
 }
 
-type AuthContextType = AuthContextObject | null;
-
 //holds the context data
-const AuthContext = createContext<AuthContextType>(null);
+const AuthContext = createContext<Nullable<AuthContextObject>>(null);
 
 //function provides contest to other components with useContext
 //returns the current value of the context
