@@ -18,7 +18,6 @@ interface ProfileData {
 }
 
 interface StorageContextObject {
-    blogRef: CollectionReference;
     profileData: Nullable<ProfileData>;
 }
 const StorageContext = createContext<Nullable<StorageContextObject>>(null);
@@ -32,12 +31,6 @@ export function StorageProvider({ children }: ReactChildren) {
     const authContext = useAuth();
 
     const [profileData, setProfileData] = useState<Nullable<ProfileData>>(null);
-
-    //initial value of db
-    const value: StorageContextObject = {
-        blogRef: collection(database, "main:blogs"),
-        profileData: profileData,
-    };
 
     const DocumentExists = async (ref: DocumentReference) => {
         const docSnap = await getDoc(ref);
@@ -89,6 +82,10 @@ export function StorageProvider({ children }: ReactChildren) {
             }
         });
     }, [authContext]);
+
+    const value: StorageContextObject = {
+        profileData: profileData,
+    };
 
     return <StorageContext.Provider value={value}>{children}</StorageContext.Provider>;
 }
