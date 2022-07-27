@@ -59,7 +59,7 @@ export function StorageProvider({ children }: ReactChildren) {
                 //create it with the current data
                 setDoc(profileRef, {
                     email,
-                    datecreated: new Date(),
+                    dateCreated: new Date(),
                     username: "",
                     profilePicture: "",
                 });
@@ -82,7 +82,7 @@ export function StorageProvider({ children }: ReactChildren) {
                     email: data.email as string,
                     username: data.username as string,
                     profilePictire: data.profilePicture as string,
-                    dateCreated: data.dataCreated as Date,
+                    dateCreated: data.dateCreated,
                 };
 
                 setProfileData(profileData);
