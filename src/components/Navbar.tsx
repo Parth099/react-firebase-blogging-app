@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
+import { useStorage } from "../contexts/storageContext";
 import useModal from "../hooks/useModal";
 import Logout from "./auth/Logout";
 
@@ -14,6 +15,10 @@ export default function Navbar() {
 
     //to display the correct set of buttons based on loggged in status
     const authContext = useAuth();
+
+    //to display profile data
+    const storageContext = useStorage();
+    console.log(storageContext);
 
     const isLoggedIn = authContext?.currentUser;
     const navigate = useNavigate();
@@ -58,9 +63,11 @@ export default function Navbar() {
                         <Link to={"/create-blog-post"} className="auth-btn self-center font-bold text-xl hover:text-sp1">
                             Create a Blog Post
                         </Link>
-                        <Link to={"/profile"} className="auth-btn self-center font-bold text-xl hover:text-sp1">
-                            My Profile
-                        </Link>
+                        {storageContext?.profileData && (
+                            <Link to={"/profile"} className="auth-btn self-center font-bold text-xl hover:text-sp1">
+                                My Profile
+                            </Link>
+                        )}
                         <a className="auth-btn self-center font-bold text-xl hover:text-sp1 cursor-pointer" onClick={openLogOutModal}>
                             Log out
                         </a>

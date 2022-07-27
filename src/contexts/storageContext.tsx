@@ -1,6 +1,7 @@
 import { collection, CollectionReference, doc, DocumentReference, getDoc, onSnapshot, setDoc } from "firebase/firestore";
+import { getDownloadURL, ref } from "firebase/storage";
 import { createContext, useContext, useEffect, useState } from "react";
-import { database } from "../../firebase-config";
+import { database, storage } from "../../firebase-config";
 import { useAuth } from "./authContext";
 import { Nullable, ReactChildren } from "./models";
 
@@ -30,12 +31,22 @@ export function StorageProvider({ children }: ReactChildren) {
     //need this to locate profile
     const authContext = useAuth();
 
+    //for FILE storage
+
     const [profileData, setProfileData] = useState<Nullable<ProfileData>>(null);
 
     const DocumentExists = async (ref: DocumentReference) => {
         const docSnap = await getDoc(ref);
         //if exists we return data
         return docSnap.exists() ? docSnap.data() : false;
+    };
+
+    const getImageUrlFromStorage = async (path: string) => {
+        console.log("tried");
+        //obtain a reference to the image in storage
+        const imageRef = ref(storage, path);
+        const URL = await getDownloadURL(imageRef);
+        return URL;
     };
 
     useEffect(() => {
@@ -48,13 +59,15 @@ export function StorageProvider({ children }: ReactChildren) {
             DocumentExists(profileRef).then((isExists) => {
                 //if doc exists we dont need to do anything
                 if (isExists) return;
-
-                //create it with the current data
-                setDoc(profileRef, {
-                    email,
-                    dateCreated: new Date(),
-                    username: "",
-                    profilePicture: "",
+                //set up default pfp
+                getImageUrlFromStorage("default_pfp.jpg").then((url) => {
+                    //create it with the current data
+                    setDoc(profileRef, {
+                        email,
+                        dateCreated: new Date(),
+                        username: "",
+                        profilePicture: url,
+                    });
                 });
             });
         }
