@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 import { useStorage } from "../contexts/storageContext";
 import useModal from "../hooks/useModal";
@@ -18,7 +18,6 @@ export default function Navbar() {
 
     //to display profile data
     const storageContext = useStorage();
-    console.log(storageContext);
 
     const isLoggedIn = authContext?.currentUser;
     const navigate = useNavigate();

@@ -1,4 +1,4 @@
-import { collection, CollectionReference, doc, DocumentReference, getDoc, onSnapshot, setDoc } from "firebase/firestore";
+import { doc, DocumentReference, getDoc, onSnapshot, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import { createContext, useContext, useEffect, useState } from "react";
 import { database, storage } from "../../firebase-config";
@@ -6,9 +6,7 @@ import { useAuth } from "./authContext";
 import { Nullable, ReactChildren } from "./models";
 
 /*
-This context tracks the blog collection ref
-                    the profile ref and doc
-
+This context tracks the profile ref and doc
 */
 
 interface ProfileData {
