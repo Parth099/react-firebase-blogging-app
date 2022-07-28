@@ -1,4 +1,4 @@
-import { doc, DocumentReference, getDoc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, DocumentReference, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes, UploadResult } from "firebase/storage";
 import { createContext, useContext, useEffect, useState } from "react";
 import { database, storage } from "../../firebase-config";
@@ -21,8 +21,9 @@ interface ProfileData {
 interface StorageContextObject {
     profileData: Nullable<ProfileData>;
     getImageUrlFromStorage: (path: string) => Promise<string>;
-    sendProfileDocUpdate: (email: string, key: string, value: string) => Promise<false | void>
+    sendProfileDocUpdate: (email: string, key: string, value: string) => Promise<false | void>;
     updatePfp: (newPfp: File, userUUID: string) => Promise<UploadResult>;
+    isUsernameAreadyUsed: (username: string) => Promise<boolean>;
 }
 const StorageContext = createContext<Nullable<StorageContextObject>>(null);
 
@@ -66,6 +67,15 @@ export function StorageProvider({ children }: ReactChildren) {
     const updatePfp = (newPfp: File, userUUID: string) => {
         const storageRef = ref(storage, `${userUUID}`);
         return uploadBytes(storageRef, newPfp);
+    };
+
+    //returns if a username is taken
+    const isUsernameAreadyUsed = async (username: string) => {
+        const profilesRef = collection(database, "main:profiles");
+        const existsUsernameQuery = query(profilesRef, where("username", "==", username));
+        const docs = await getDocs(existsUsernameQuery);
+
+        return docs.size === 0;
     };
 
     useEffect(() => {
@@ -121,6 +131,7 @@ export function StorageProvider({ children }: ReactChildren) {
         getImageUrlFromStorage,
         updatePfp,
         sendProfileDocUpdate,
+        isUsernameAreadyUsed,
     };
 
     return <StorageContext.Provider value={value}>{children}</StorageContext.Provider>;

@@ -3,6 +3,7 @@ import { useAuth } from "../../contexts/authContext";
 import { useStorage } from "../../contexts/storageContext";
 import SquareSpinnerHOC from "../../util/SquareSpinnerHOC";
 import { v4 as uuidv4 } from "uuid";
+import EditableField from "../../util/EditableField";
 
 export default function Profile() {
     const storageContext = useStorage();
@@ -46,6 +47,36 @@ export default function Profile() {
     }, [profileData, updatedPFP]);
 
     //we still need to watch out for people accessing this page directly
+
+    //for editing username
+    const [usernameEditorMode, setUsernameEditorMode] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const validateAndUpdateUsername = (username: string) => {
+        const email = authContext?.currentUser?.email;
+        if (!email) return; //if somehow there is no auth
+
+        //only alpha numeric
+        if (!/[0-9a-z\_]+/.test(username)) {
+            setErrorMessage("Only letters, numbers and underscores allowed");
+            return;
+        }
+
+        //if username is unique then trigger update
+        storageContext!.isUsernameAreadyUsed(username).then((isUsable) => {
+            console.log("hi");
+
+            //already in use, do not update profile doc
+            if (!isUsable) {
+                setErrorMessage(`${username} already in use`);
+                return;
+            }
+            storageContext?.sendProfileDocUpdate(email, "username", username);
+            setUsernameEditorMode(false); //close editor
+            setErrorMessage("");
+        });
+    };
+
     if (!profileData) return;
 
     return (
@@ -72,8 +103,31 @@ export default function Profile() {
                                 <h4 className="text-white text-xl font-bold">{authContext?.currentUser?.email}</h4>
                             </section>
                             <section>
-                                <h3 className="std-label header-font">Username</h3>
-                                <h4 className="text-white text-xl font-bold">{profileData.username ? profileData.username : "Not Set"}</h4>
+                                <div className="flex gap-2 items-center">
+                                    <h3 className="std-label header-font">Username</h3>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        className="fill-sp1 hover:fill-sp2"
+                                        onClick={() => {
+                                            //flip state
+                                            setUsernameEditorMode((val) => !val);
+                                        }}
+                                    >
+                                        <path d="M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z" />
+                                    </svg>
+                                </div>
+                                <div className="w-88">
+                                    <EditableField
+                                        editorMode={usernameEditorMode}
+                                        updateValue={validateAndUpdateUsername}
+                                        value={profileData!.username}
+                                        defaultValue="Not set"
+                                        errorMessage={errorMessage}
+                                    />
+                                </div>
                             </section>
                         </div>
                     </div>
