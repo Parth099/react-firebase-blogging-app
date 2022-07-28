@@ -1,9 +1,10 @@
-import { doc, DocumentReference, getDoc, onSnapshot, setDoc } from "firebase/firestore";
-import { getDownloadURL, ref } from "firebase/storage";
+import { doc, DocumentReference, getDoc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes, UploadResult } from "firebase/storage";
 import { createContext, useContext, useEffect, useState } from "react";
 import { database, storage } from "../../firebase-config";
 import { useAuth } from "./authContext";
 import { Nullable, ReactChildren } from "./models";
+import { v4 as uuidv4 } from "uuid";
 
 /*
 This context tracks the profile ref and doc
@@ -14,11 +15,14 @@ interface ProfileData {
     username: string;
     profilePictureName: string;
     dateCreated: Date;
+    uuid: string;
 }
 
 interface StorageContextObject {
     profileData: Nullable<ProfileData>;
     getImageUrlFromStorage: (path: string) => Promise<string>;
+    sendProfileDocUpdate: (email: string, key: string, value: string) => Promise<false | void>
+    updatePfp: (newPfp: File, userUUID: string) => Promise<UploadResult>;
 }
 const StorageContext = createContext<Nullable<StorageContextObject>>(null);
 
@@ -40,11 +44,28 @@ export function StorageProvider({ children }: ReactChildren) {
         return docSnap.exists() ? docSnap.data() : false;
     };
 
+    //see method name
     const getImageUrlFromStorage = async (path: string) => {
         //obtain a reference to the image in storage
         const imageRef = ref(storage, path);
         const URL = await getDownloadURL(imageRef);
         return URL;
+    };
+
+    //sends a document update, works on all fields except date
+    const sendProfileDocUpdate = async (email: string, key: string, value: string) => {
+        const updateRef = doc(database, `main:profiles/${email}`);
+        const exists = await DocumentExists(updateRef);
+
+        //if somehow the document doesnt exists, dont do anything
+        if (!exists) return false;
+
+        return await updateDoc(updateRef, { [key]: value });
+    };
+
+    const updatePfp = (newPfp: File, userUUID: string) => {
+        const storageRef = ref(storage, `${userUUID}`);
+        return uploadBytes(storageRef, newPfp);
     };
 
     useEffect(() => {
@@ -65,6 +86,7 @@ export function StorageProvider({ children }: ReactChildren) {
                     dateCreated: new Date(),
                     username: "",
                     profilePictureName: "default_pfp.jpg",
+                    uuid: uuidv4(),
                 });
             });
         }
@@ -86,6 +108,7 @@ export function StorageProvider({ children }: ReactChildren) {
                     username: data.username as string,
                     profilePictureName: data.profilePictureName as string,
                     dateCreated: data.dateCreated,
+                    uuid: data.uuid,
                 };
 
                 setProfileData(profileData);
@@ -96,6 +119,8 @@ export function StorageProvider({ children }: ReactChildren) {
     const value: StorageContextObject = {
         profileData: profileData,
         getImageUrlFromStorage,
+        updatePfp,
+        sendProfileDocUpdate,
     };
 
     return <StorageContext.Provider value={value}>{children}</StorageContext.Provider>;

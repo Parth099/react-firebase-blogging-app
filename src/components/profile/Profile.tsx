@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext";
 import { useStorage } from "../../contexts/storageContext";
 import SquareSpinnerHOC from "../../util/SquareSpinnerHOC";
+import { v4 as uuidv4 } from "uuid";
 
 export default function Profile() {
     const storageContext = useStorage();
@@ -11,7 +12,7 @@ export default function Profile() {
     //this data is not null since this component only renders if this data is present
     const profileData = storageContext!.profileData;
 
-    //we still need to watch out for people accessing this page directly
+    const [updatedPFP, setUpdatedPFP] = useState(1);
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) return;
@@ -22,6 +23,16 @@ export default function Profile() {
 
         //if it really is an image (not SVG)
         if (!/image\/(png|jpg|jpeg)/.test(TYPE)) return;
+
+        const uuid = profileData!.profilePictureName;
+
+        storageContext!.updatePfp(FILE, uuid).then(() => {
+            const email = authContext?.currentUser?.email;
+            if (!email) return; //if somehow there is no auth
+
+            //update the field, then trigger a rerender with the image
+            storageContext!.sendProfileDocUpdate(email, "profilePictureName", uuid).then(() => setUpdatedPFP((value) => value + 1));
+        });
     };
 
     const [pfpLinK, setPfpLinK] = useState<string>("");
@@ -32,8 +43,9 @@ export default function Profile() {
         storageContext!.getImageUrlFromStorage(profileData.profilePictureName).then((url) => {
             setPfpLinK(url);
         });
-    }, [profileData]);
+    }, [profileData, updatedPFP]);
 
+    //we still need to watch out for people accessing this page directly
     if (!profileData) return;
 
     return (
@@ -42,10 +54,10 @@ export default function Profile() {
                 <div className="p-4">
                     <h2 className="text-4xl text-sp1 header-font border-b-sp1 border-b-2 pb-2 mb-5">Profile</h2>
                     <div className="flex gap-8">
-                        <label className="img-cont w-64 h-64 block relative cursor-pointer" htmlFor="upload-image">
+                        <label className="img-cont w-64 h-64 block relative cursor-pointer border-white border-2" htmlFor="upload-image">
                             <input type="file" id="upload-image" className="hidden" onChange={handleImageUpload} />
                             <SquareSpinnerHOC displaySpinner={pfpLinK === "" /* if there is a valid link then render the pfp */}>
-                                <img src={pfpLinK} alt={"profile image"} className="w-full" />
+                                {updatedPFP > 0 && <img src={pfpLinK} alt={"profile image"} className="w-full h-full text-sp4 " />}
                             </SquareSpinnerHOC>
                             <div className="upload-cont absolute w-full bottom-0 left-0 light-overlay p-3 flex justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
