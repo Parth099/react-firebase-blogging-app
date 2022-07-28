@@ -1,12 +1,13 @@
 import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext";
+import { Nullable } from "../../contexts/models";
 
 export default function SignUp() {
     //pointers to DOM
-    const emailRef = useRef<HTMLInputElement | null>(null);
-    const pwRef = useRef<HTMLInputElement | null>(null);
-    const confirmPwRef = useRef<HTMLInputElement | null>(null);
+    const emailRef = useRef<Nullable<HTMLInputElement>>(null);
+    const pwRef = useRef<Nullable<HTMLInputElement>>(null);
+    const confirmPwRef = useRef<Nullable<HTMLInputElement>>(null);
 
     const authContext = useAuth();
     const navigate = useNavigate();

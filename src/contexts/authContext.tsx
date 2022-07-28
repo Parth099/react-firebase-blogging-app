@@ -17,7 +17,7 @@ import { Nullable, ReactChildren } from "./models";
 type EmailPasswordPromise = (a: string, b: string) => Promise<UserCredential>;
 
 interface AuthContextObject {
-    currentUser: FirebaseUser | null; //allow user to be null for conditional rendering
+    currentUser: Nullable<FirebaseUser>; //allow user to be null for conditional rendering
     signIn: EmailPasswordPromise;
     createAccount: EmailPasswordPromise;
     logOut: () => Promise<void>;
@@ -39,7 +39,7 @@ export function AuthProvider({ children }: ReactChildren) {
     //auth for our firebase project
     const auth = getAuth(app);
 
-    const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
+    const [currentUser, setCurrentUser] = useState<Nullable<FirebaseUser>>(null);
     const [firstLoadCompleted, setFirstLoadCompleted] = useState(false);
 
     useEffect(() => {

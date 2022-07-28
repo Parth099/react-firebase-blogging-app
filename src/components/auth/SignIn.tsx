@@ -1,12 +1,13 @@
 import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext";
+import { Nullable } from "../../contexts/models";
 
 //this component will handle sign in
 export default function SignIn() {
     //dom pointers
-    const emailRef = useRef<HTMLInputElement | null>(null);
-    const pwRef = useRef<HTMLInputElement | null>(null);
+    const emailRef = useRef<Nullable<HTMLInputElement>>(null);
+    const pwRef = useRef<Nullable<HTMLInputElement>>(null);
 
     const authContext = useAuth();
     const navigate = useNavigate();

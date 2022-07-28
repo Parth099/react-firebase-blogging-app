@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { Nullable } from "../contexts/models";
 
 interface EditableFieldProps {
     value: string;
@@ -9,7 +10,7 @@ interface EditableFieldProps {
 }
 
 export default function EditableField(props: EditableFieldProps) {
-    const usernameRef = useRef<HTMLInputElement | null>(null);
+    const usernameRef = useRef<Nullable<HTMLInputElement>>(null);
 
     const handleSubmit = () => {
         const value = usernameRef.current!.value;

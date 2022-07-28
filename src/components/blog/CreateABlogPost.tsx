@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext";
 import useModal from "../../hooks/useModal";
 import CancelCreationModal from "./CancelCreationModal";
+import { Nullable } from "../../contexts/models";
 /*
 component used to add a new blog post to the db
 
@@ -28,8 +29,8 @@ export default function CreateABlogPost() {
     const authContext = useAuth();
 
     //pointers for html text collection
-    const titleRef = useRef<HTMLTextAreaElement | null>(null);
-    const contentRef = useRef<HTMLTextAreaElement | null>(null);
+    const titleRef = useRef<Nullable<HTMLTextAreaElement>>(null);
+    const contentRef = useRef<Nullable<HTMLTextAreaElement>>(null);
 
     //state for blog tags
     const [blogTags, setBlogTags] = useState<Array<string>>([]);

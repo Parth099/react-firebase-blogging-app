@@ -35,8 +35,7 @@ export function StorageProvider({ children }: ReactChildren) {
     //need this to locate profile
     const authContext = useAuth();
 
-    //for FILE storage
-
+    //kept in state to trigger rerenders later
     const [profileData, setProfileData] = useState<Nullable<ProfileData>>(null);
 
     const DocumentExists = async (ref: DocumentReference) => {
@@ -64,6 +63,7 @@ export function StorageProvider({ children }: ReactChildren) {
         return await updateDoc(updateRef, { [key]: value });
     };
 
+    //updates userpfp by replacing existing image
     const updatePfp = (newPfp: File, userUUID: string) => {
         const storageRef = ref(storage, `${userUUID}`);
         return uploadBytes(storageRef, newPfp);
