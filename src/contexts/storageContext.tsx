@@ -12,12 +12,13 @@ This context tracks the profile ref and doc
 interface ProfileData {
     email: string;
     username: string;
-    profilePictire: string;
+    profilePictureName: string;
     dateCreated: Date;
 }
 
 interface StorageContextObject {
     profileData: Nullable<ProfileData>;
+    getImageUrlFromStorage: (path: string) => Promise<string>;
 }
 const StorageContext = createContext<Nullable<StorageContextObject>>(null);
 
@@ -40,7 +41,6 @@ export function StorageProvider({ children }: ReactChildren) {
     };
 
     const getImageUrlFromStorage = async (path: string) => {
-        console.log("tried");
         //obtain a reference to the image in storage
         const imageRef = ref(storage, path);
         const URL = await getDownloadURL(imageRef);
@@ -58,14 +58,13 @@ export function StorageProvider({ children }: ReactChildren) {
                 //if doc exists we dont need to do anything
                 if (isExists) return;
                 //set up default pfp
-                getImageUrlFromStorage("default_pfp.jpg").then((url) => {
-                    //create it with the current data
-                    setDoc(profileRef, {
-                        email,
-                        dateCreated: new Date(),
-                        username: "",
-                        profilePicture: url,
-                    });
+
+                //create it with the current data
+                setDoc(profileRef, {
+                    email,
+                    dateCreated: new Date(),
+                    username: "",
+                    profilePictureName: "default_pfp.jpg",
                 });
             });
         }
@@ -85,7 +84,7 @@ export function StorageProvider({ children }: ReactChildren) {
                 const profileData = {
                     email: data.email as string,
                     username: data.username as string,
-                    profilePictire: data.profilePicture as string,
+                    profilePictureName: data.profilePictureName as string,
                     dateCreated: data.dateCreated,
                 };
 
@@ -96,6 +95,7 @@ export function StorageProvider({ children }: ReactChildren) {
 
     const value: StorageContextObject = {
         profileData: profileData,
+        getImageUrlFromStorage,
     };
 
     return <StorageContext.Provider value={value}>{children}</StorageContext.Provider>;

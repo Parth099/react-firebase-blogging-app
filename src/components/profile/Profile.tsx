@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext";
 import { useStorage } from "../../contexts/storageContext";
+import SquareSpinnerHOC from "../../util/SquareSpinnerHOC";
 
 export default function Profile() {
     const storageContext = useStorage();
@@ -10,7 +12,6 @@ export default function Profile() {
     const profileData = storageContext!.profileData;
 
     //we still need to watch out for people accessing this page directly
-    if (!profileData) return;
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) return;
@@ -23,6 +24,18 @@ export default function Profile() {
         if (!/image\/(png|jpg|jpeg)/.test(TYPE)) return;
     };
 
+    const [pfpLinK, setPfpLinK] = useState<string>("");
+
+    useEffect(() => {
+        if (!profileData) return;
+        //obtain the pfp link per rerender incase they change their pfp
+        storageContext!.getImageUrlFromStorage(profileData.profilePictureName).then((url) => {
+            setPfpLinK(url);
+        });
+    }, [profileData]);
+
+    if (!profileData) return;
+
     return (
         <section className="w-full p-8 flex justify-center">
             <div className="w-288 bg-sp4 rounded-md shadow-lg">
@@ -30,8 +43,10 @@ export default function Profile() {
                     <h2 className="text-4xl text-sp1 header-font border-b-sp1 border-b-2 pb-2 mb-5">Profile</h2>
                     <div className="flex gap-8">
                         <label className="img-cont w-64 h-64 block relative cursor-pointer" htmlFor="upload-image">
-                            <img src={profileData!.profilePictire} alt={"profile image"} className="w-full" />
                             <input type="file" id="upload-image" className="hidden" onChange={handleImageUpload} />
+                            <SquareSpinnerHOC displaySpinner={pfpLinK === "" /* if there is a valid link then render the pfp */}>
+                                <img src={pfpLinK} alt={"profile image"} className="w-full" />
+                            </SquareSpinnerHOC>
                             <div className="upload-cont absolute w-full bottom-0 left-0 light-overlay p-3 flex justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
                                     <path d="M0 12c0 6.627 5.373 12 12 12s12-5.373 12-12-5.373-12-12-12-12 5.373-12 12zm18-1h-4v7h-4v-7h-4l6-6 6 6z" />
