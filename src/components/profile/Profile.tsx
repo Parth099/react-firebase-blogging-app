@@ -95,7 +95,7 @@ export default function Profile() {
         if (!storageContext?.blogsRef) return;
 
         //query for matching blog posts
-        const userBlogQuery = query(storageContext.blogsRef, where("createdBy", "==", authContext.currentUser.email), orderBy("created"));
+        const userBlogQuery = query(storageContext.blogsRef, where("createdBy", "==", authContext.currentUser.email), orderBy("created", "desc"));
 
         getDocs(userBlogQuery).then((blogArray) => {
             const allPosts: any[] = [];
@@ -108,8 +108,10 @@ export default function Profile() {
     }, [authContext, storageContext]);
 
     //render nothing if profile data is invalid
-    //wait for load
-    if (!profileData) return;
+    //wait for load for auth and storage
+    if (!profileData) {
+        return <></>;
+    }
 
     return (
         <section className="w-full p-8 flex justify-center">

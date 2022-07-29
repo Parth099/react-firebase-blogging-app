@@ -2,6 +2,7 @@ import {
     collection,
     CollectionReference,
     doc,
+    DocumentData,
     DocumentReference,
     getDoc,
     getDocs,
@@ -37,6 +38,7 @@ interface StorageContextObject {
     updatePfp: (newPfp: File, userUUID: string) => Promise<UploadResult>;
     isUsernameAreadyUsed: (username: string) => Promise<boolean>;
     blogsRef: CollectionReference;
+    getDocDataById: (id: string) => Promise<false | DocumentData>;
 }
 const StorageContext = createContext<Nullable<StorageContextObject>>(null);
 
@@ -89,6 +91,11 @@ export function StorageProvider({ children }: ReactChildren) {
         const docs = await getDocs(existsUsernameQuery);
 
         return docs.size === 0;
+    };
+
+    const getDocDataById = async (id: string) => {
+        const docRef = doc(database, "main:blogs", id);
+        return await DocumentExists(docRef);
     };
 
     useEffect(() => {
@@ -148,6 +155,7 @@ export function StorageProvider({ children }: ReactChildren) {
 
         //we will not give a ref to the main:blogs/$email since this will produce FUN state errors
         blogsRef: collection(database, `main:blogs`),
+        getDocDataById,
     };
 
     return <StorageContext.Provider value={value}>{children}</StorageContext.Provider>;

@@ -2,9 +2,8 @@ import React, { useRef } from "react";
 
 interface TagProps {
     id: string;
-    addTag: (tagName: string) => void;
-    removeTag: (tagName: string) => void;
     tags: Array<string>;
+    setTags: any;
 }
 
 const ENTERKEY = "Enter";
@@ -24,7 +23,7 @@ export default function TagsField(props: TagProps) {
 
         //at this point it has passed all checks and is valid
         target.value = "";
-        props.addTag(tagSubmitted);
+        addTag(tagSubmitted);
     };
 
     const handleTagRemoval = (e: React.MouseEvent) => {
@@ -39,7 +38,28 @@ export default function TagsField(props: TagProps) {
         if (!tagHolder.textContent) return;
 
         //initiate removal
-        props.removeTag(tagHolder.textContent);
+        removeTag(tagHolder.textContent);
+    };
+
+    //add / rm for blogTags
+    const addTag = (tagName: string) => {
+        const tagExists = props.tags.findIndex((tag) => tag === tagName);
+        //do not add dupe tags
+        if (tagExists >= 0) return;
+
+        props.setTags((currblogTags: string) => [...currblogTags, tagName]);
+    };
+
+    const removeTag = (tagName: string) => {
+        const newTags = [...props.tags];
+        const rmIndex = newTags.findIndex((tag) => tag === tagName);
+
+        //if somehow we dont have the tag we want to delete in here we ignore the request
+        if (rmIndex < 0) return;
+
+        //remove one element starting at the index its found (aka remove the element)
+        newTags.splice(rmIndex, 1);
+        props.setTags(newTags);
     };
 
     return (
