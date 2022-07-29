@@ -4,7 +4,8 @@ import { useStorage } from "../../contexts/storageContext";
 import SquareSpinnerHOC from "../../util/SquareSpinnerHOC";
 import EditableField from "../../util/EditableField";
 import { BlogData, Nullable } from "../../contexts/models";
-import { getDocs, query, where } from "firebase/firestore";
+import { getDocs, orderBy, query, where } from "firebase/firestore";
+import BlogList from "./BlogList";
 
 export default function Profile() {
     const storageContext = useStorage();
@@ -94,7 +95,7 @@ export default function Profile() {
         if (!storageContext?.blogsRef) return;
 
         //query for matching blog posts
-        const userBlogQuery = query(storageContext.blogsRef, where("createdBy", "==", authContext.currentUser.email));
+        const userBlogQuery = query(storageContext.blogsRef, where("createdBy", "==", authContext.currentUser.email), orderBy("created"));
 
         getDocs(userBlogQuery).then((blogArray) => {
             const allPosts: any[] = [];
@@ -162,6 +163,10 @@ export default function Profile() {
                             </section>
                         </div>
                     </div>
+                    <>
+                        <h2 className="text-4xl text-sp1 header-font border-b-sp1 border-b-2 pb-2 my-5">Your Blog Posts</h2>
+                        <BlogList blogs={blogPosts} />
+                    </>
                 </div>
             </div>
         </section>

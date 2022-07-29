@@ -251,3 +251,7 @@ body {
         transform: rotate(360deg);
     }
 }
+
+.blog-list-element:hover > .title {
+    color: #e7a117;
+}
