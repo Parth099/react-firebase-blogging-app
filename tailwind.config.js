@@ -11,7 +11,7 @@ module.exports = {
                 sp5: "#addae1",
             },
             width: {
-                88: "22rem",
+                76: "19rem",
                 176: "44rem",
                 288: "72rem",
             },

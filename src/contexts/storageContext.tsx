@@ -1,4 +1,16 @@
-import { collection, doc, DocumentReference, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
+import {
+    collection,
+    CollectionReference,
+    doc,
+    DocumentReference,
+    getDoc,
+    getDocs,
+    onSnapshot,
+    query,
+    setDoc,
+    updateDoc,
+    where,
+} from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes, UploadResult } from "firebase/storage";
 import { createContext, useContext, useEffect, useState } from "react";
 import { database, storage } from "../../firebase-config";
@@ -24,6 +36,7 @@ interface StorageContextObject {
     sendProfileDocUpdate: (email: string, key: string, value: string) => Promise<false | void>;
     updatePfp: (newPfp: File, userUUID: string) => Promise<UploadResult>;
     isUsernameAreadyUsed: (username: string) => Promise<boolean>;
+    blogsRef: CollectionReference;
 }
 const StorageContext = createContext<Nullable<StorageContextObject>>(null);
 
@@ -132,6 +145,9 @@ export function StorageProvider({ children }: ReactChildren) {
         updatePfp,
         sendProfileDocUpdate,
         isUsernameAreadyUsed,
+
+        //we will not give a ref to the main:blogs/$email since this will produce FUN state errors
+        blogsRef: collection(database, `main:blogs`),
     };
 
     return <StorageContext.Provider value={value}>{children}</StorageContext.Provider>;

@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext";
 import { useStorage } from "../../contexts/storageContext";
 import SquareSpinnerHOC from "../../util/SquareSpinnerHOC";
-import { v4 as uuidv4 } from "uuid";
 import EditableField from "../../util/EditableField";
+import { BlogData, Nullable } from "../../contexts/models";
+import { getDocs, query, where } from "firebase/firestore";
 
 export default function Profile() {
     const storageContext = useStorage();
@@ -64,7 +65,11 @@ export default function Profile() {
 
         //if username is unique then trigger update
         storageContext!.isUsernameAreadyUsed(username).then((isUsable) => {
-            console.log("hi");
+            //ensure the user knows what they are doing
+            if (username === profileData?.username) {
+                setUsernameEditorMode(false);
+                return;
+            }
 
             //already in use, do not update profile doc
             if (!isUsable) {
@@ -77,6 +82,32 @@ export default function Profile() {
         });
     };
 
+    //holds the array of blogs from a snapshot
+    const [blogPosts, setBlogPosts] = useState<Nullable<any[]>>(null);
+    console.log(blogPosts);
+    //load in blogPosts ONCE
+    useEffect(() => {
+        //we require a valid auth
+        if (!authContext?.currentUser?.email) return;
+
+        //required a valid red
+        if (!storageContext?.blogsRef) return;
+
+        //query for matching blog posts
+        const userBlogQuery = query(storageContext.blogsRef, where("createdBy", "==", authContext.currentUser.email));
+
+        getDocs(userBlogQuery).then((blogArray) => {
+            const allPosts: any[] = [];
+            blogArray.forEach((blog) => {
+                const blogData = blog.data();
+                allPosts.push({ ...blogData, id: blog.id });
+            });
+            setBlogPosts(allPosts);
+        });
+    }, [authContext, storageContext]);
+
+    //render nothing if profile data is invalid
+    //wait for load
     if (!profileData) return;
 
     return (
@@ -119,7 +150,7 @@ export default function Profile() {
                                         <path d="M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z" />
                                     </svg>
                                 </div>
-                                <div className="w-88">
+                                <div className="w-76">
                                     <EditableField
                                         editorMode={usernameEditorMode}
                                         updateValue={validateAndUpdateUsername}
