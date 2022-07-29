@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Nullable } from "../../contexts/models";
 import { useStorage } from "../../contexts/storageContext";
+import useModal from "../../hooks/useModal";
 import SquareSpinnerHOC from "../../util/SquareSpinnerHOC";
+import CancelCreationModal from "./CancelCreationModal";
 import TagsField from "./TagsField";
 
 export default function EditBlogPost() {
@@ -28,8 +30,18 @@ export default function EditBlogPost() {
         });
     }, [storageContext]);
 
+    //reroute
+    const navigate = useNavigate();
+
     //pointers
     const contentRef = useRef<Nullable<HTMLTextAreaElement>>(null);
+
+    //cancel model
+    const [cancelModalStatus, cancelModalOpen, cancelModalClose] = useModal();
+    const handlePostEdit = () => {};
+    const cancelEdit = () => {
+        navigate("/profile");
+    };
 
     return (
         <div className="create-blog flex justify-center">
@@ -59,6 +71,15 @@ export default function EditBlogPost() {
                             </>
                         )}
                     </SquareSpinnerHOC>
+                </div>
+                <div className="btn-container flex flex-row-reverse gap-2">
+                    <button className="px-6 py-2 bg-sp1 mt-2 rounded-sm font-bold hover:bg-yellow-500" onClick={handlePostEdit}>
+                        Submit Edits
+                    </button>
+                    <button className="px-6 py-2 bg-red-600 mt-2 rounded-sm font-bold hover:bg-red-500" onClick={cancelModalOpen}>
+                        Cancel
+                    </button>
+                    {cancelModalStatus && <CancelCreationModal closeModal={cancelModalClose} confirmAction={cancelEdit} />}
                 </div>
             </section>
         </div>

@@ -112,7 +112,7 @@ export default function CreateABlogPost() {
                     <button className="px-6 py-2 bg-red-600 mt-2 rounded-sm font-bold hover:bg-red-500" onClick={cancelModalOpen}>
                         Cancel
                     </button>
-                    {cancelModalStatus && <CancelCreationModal closeModal={cancelModalClose} cancelCreation={cancelCreationOfBlogPost} />}
+                    {cancelModalStatus && <CancelCreationModal closeModal={cancelModalClose} confirmAction={cancelCreationOfBlogPost} />}
                 </div>
             </section>
         </div>

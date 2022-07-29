@@ -7,6 +7,6 @@ export default defineConfig({
     build: {
         outDir: "build",
     },
-    base: "./react-firebase-blogging-app/",
+    base: "/react-firebase-blogging-app/",
     plugins: [react()],
 });

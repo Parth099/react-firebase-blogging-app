@@ -2,7 +2,7 @@ import React from "react";
 
 interface CancelCreationProps {
     closeModal: () => void;
-    cancelCreation: () => void;
+    confirmAction: () => void;
 }
 
 export default function CancelCreationModal(props: CancelCreationProps) {
@@ -10,7 +10,7 @@ export default function CancelCreationModal(props: CancelCreationProps) {
         props.closeModal();
     };
     const handleYes = () => {
-        props.cancelCreation();
+        props.confirmAction();
     };
 
     return (

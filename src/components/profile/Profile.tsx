@@ -85,7 +85,7 @@ export default function Profile() {
 
     //holds the array of blogs from a snapshot
     const [blogPosts, setBlogPosts] = useState<Nullable<any[]>>(null);
-    console.log(blogPosts);
+
     //load in blogPosts ONCE
     useEffect(() => {
         //we require a valid auth
