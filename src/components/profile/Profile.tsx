@@ -107,69 +107,67 @@ export default function Profile() {
         });
     }, [authContext, storageContext]);
 
-    //render nothing if profile data is invalid
-    //wait for load for auth and storage
-    if (!profileData) {
-        return <></>;
-    }
-
     return (
         <section className="w-full p-8 flex justify-center">
             <div className="w-288 bg-sp4 rounded-md shadow-lg">
-                <div className="p-4">
-                    <h2 className="text-4xl text-sp1 header-font border-b-sp1 border-b-2 pb-2 mb-5">Profile</h2>
-                    <div className="flex gap-8">
-                        <label className="img-cont w-64 h-64 block relative cursor-pointer border-white border-2" htmlFor="upload-image">
-                            <input type="file" id="upload-image" className="hidden" onChange={handleImageUpload} />
-                            <SquareSpinnerHOC displaySpinner={pfpLinK === "" /* if there is a valid link then render the pfp */}>
-                                {updatedPFP > 0 && <img src={pfpLinK} alt={"profile image"} className="w-full h-full text-sp4 " />}
-                            </SquareSpinnerHOC>
-                            <div className="upload-cont absolute w-full bottom-0 left-0 light-overlay p-3 flex justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-                                    <path d="M0 12c0 6.627 5.373 12 12 12s12-5.373 12-12-5.373-12-12-12-12 5.373-12 12zm18-1h-4v7h-4v-7h-4l6-6 6 6z" />
-                                </svg>
-                                <span className="pl-3 self-center font-bold header-font text-lg">Upload</span>
+                <SquareSpinnerHOC displaySpinner={!profileData}>
+                    {profileData && (
+                        <div className="p-4">
+                            <h2 className="text-4xl text-sp1 header-font border-b-sp1 border-b-2 pb-2 mb-5">Profile</h2>
+                            <div className="flex gap-8">
+                                <label className="img-cont w-64 h-64 block relative cursor-pointer border-white border-2" htmlFor="upload-image">
+                                    <input type="file" id="upload-image" className="hidden" onChange={handleImageUpload} />
+                                    <SquareSpinnerHOC displaySpinner={pfpLinK === "" /* if there is a valid link then render the pfp */}>
+                                        {updatedPFP > 0 && <img src={pfpLinK} alt={"profile image"} className="w-full h-full text-sp4 " />}
+                                    </SquareSpinnerHOC>
+                                    <div className="upload-cont absolute w-full bottom-0 left-0 light-overlay p-3 flex justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                                            <path d="M0 12c0 6.627 5.373 12 12 12s12-5.373 12-12-5.373-12-12-12-12 5.373-12 12zm18-1h-4v7h-4v-7h-4l6-6 6 6z" />
+                                        </svg>
+                                        <span className="pl-3 self-center font-bold header-font text-lg">Upload</span>
+                                    </div>
+                                </label>
+                                <div className="info-col flex flex-col gap-4 justify-center">
+                                    <section>
+                                        <h3 className="std-label header-font">Email</h3>
+                                        <h4 className="text-white text-xl font-bold">{authContext?.currentUser?.email}</h4>
+                                    </section>
+                                    <section>
+                                        <div className="flex gap-2 items-center">
+                                            <h3 className="std-label header-font">Username</h3>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                className="fill-sp1 hover:fill-sp2"
+                                                onClick={() => {
+                                                    //flip state
+                                                    setUsernameEditorMode((val) => !val);
+                                                }}
+                                            >
+                                                <path d="M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z" />
+                                            </svg>
+                                        </div>
+                                        <div className="w-76">
+                                            <EditableField
+                                                editorMode={usernameEditorMode}
+                                                updateValue={validateAndUpdateUsername}
+                                                value={profileData!.username}
+                                                defaultValue="Not set"
+                                                errorMessage={errorMessage}
+                                            />
+                                        </div>
+                                    </section>
+                                </div>
                             </div>
-                        </label>
-                        <div className="info-col flex flex-col gap-4 justify-center">
-                            <section>
-                                <h3 className="std-label header-font">Email</h3>
-                                <h4 className="text-white text-xl font-bold">{authContext?.currentUser?.email}</h4>
-                            </section>
-                            <section>
-                                <div className="flex gap-2 items-center">
-                                    <h3 className="std-label header-font">Username</h3>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        className="fill-sp1 hover:fill-sp2"
-                                        onClick={() => {
-                                            //flip state
-                                            setUsernameEditorMode((val) => !val);
-                                        }}
-                                    >
-                                        <path d="M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z" />
-                                    </svg>
-                                </div>
-                                <div className="w-76">
-                                    <EditableField
-                                        editorMode={usernameEditorMode}
-                                        updateValue={validateAndUpdateUsername}
-                                        value={profileData!.username}
-                                        defaultValue="Not set"
-                                        errorMessage={errorMessage}
-                                    />
-                                </div>
-                            </section>
+                            <>
+                                <h2 className="text-4xl text-sp1 header-font border-b-sp1 border-b-2 pb-2 my-5">Your Blog Posts</h2>
+                                <BlogList blogs={blogPosts} />
+                            </>
                         </div>
-                    </div>
-                    <>
-                        <h2 className="text-4xl text-sp1 header-font border-b-sp1 border-b-2 pb-2 my-5">Your Blog Posts</h2>
-                        <BlogList blogs={blogPosts} />
-                    </>
-                </div>
+                    )}
+                </SquareSpinnerHOC>
             </div>
         </section>
     );
