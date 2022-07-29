@@ -3,7 +3,7 @@ import { useAuth } from "../../contexts/authContext";
 import { useStorage } from "../../contexts/storageContext";
 import SquareSpinnerHOC from "../../util/SquareSpinnerHOC";
 import EditableField from "../../util/EditableField";
-import { BlogData, Nullable } from "../../contexts/models";
+import { Nullable } from "../../contexts/models";
 import { getDocs, orderBy, query, where } from "firebase/firestore";
 import BlogList from "./BlogList";
 

@@ -1,28 +1,32 @@
 {
-  "name": "react-firebase-blogging-app",
-  "private": true,
-  "version": "0.0.0",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@types/uuid": "^8.3.4",
-    "firebase": "^9.9.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-router-dom": "^6.3.0",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
-    "@types/react": "^18.0.15",
-    "@types/react-dom": "^18.0.6",
-    "@vitejs/plugin-react": "^1.3.0",
-    "autoprefixer": "^10.4.7",
-    "postcss": "^8.4.14",
-    "tailwindcss": "^3.1.6",
-    "typescript": "^4.6.3",
-    "vite": "^2.9.9"
-  }
+    "name": "react-firebase-blogging-app",
+    "private": true,
+    "version": "0.0.0",
+    "homepage": "https://parth099.github.io/react-firebase-blogging-app",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d build"
+    },
+    "dependencies": {
+        "@types/uuid": "^8.3.4",
+        "firebase": "^9.9.0",
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
+        "react-router-dom": "^6.3.0",
+        "uuid": "^8.3.2"
+    },
+    "devDependencies": {
+        "@types/react": "^18.0.15",
+        "@types/react-dom": "^18.0.6",
+        "@vitejs/plugin-react": "^1.3.0",
+        "autoprefixer": "^10.4.7",
+        "gh-pages": "^4.0.0",
+        "postcss": "^8.4.14",
+        "tailwindcss": "^3.1.6",
+        "typescript": "^4.6.3",
+        "vite": "^2.9.9"
+    }
 }
