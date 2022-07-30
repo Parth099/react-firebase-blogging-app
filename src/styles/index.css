@@ -1,0 +1,257 @@
+/*fonts*/
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@800&family=Roboto:ital,wght@0,400;0,500;1,500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+@font-face {
+    font-family: "HNB";
+    src: url("../assets/HelveticaNeueBold.ttf");
+}
+
+.title-font {
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+    font-weight: 800;
+}
+
+.secondary-font {
+    font-family: "Inter", sans-serif;
+}
+
+.header-font {
+    font-family: "HNB", "Inter", sans-serif;
+}
+
+.header-font::before,
+.header-font::after {
+    content: '"';
+}
+/*fonts*/
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+/*reset*/
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+    margin: 0;
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul[role="list"],
+ol[role="list"] {
+    list-style: none;
+}
+
+/* Set core root defaults */
+html:focus-within {
+    scroll-behavior: smooth;
+}
+
+/* Set core body defaults */
+body {
+    min-height: 100vh;
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+    text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+    max-width: 100%;
+    display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+/* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+    html:focus-within {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/*reset*/
+
+/* tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* tailwind */
+
+body {
+    background-color: #2f3847;
+    z-index: 0;
+}
+
+.login-form > input {
+    margin-top: 5px;
+}
+
+.login-submit-btn {
+    background: #bce4fd;
+    transition: 0.3s;
+}
+
+.login-submit-btn:hover {
+    background: #1b79dd;
+    color: white;
+}
+
+/* color selection : https://colorhunt.co/palette/2228322f3847e7a117c57f1e */
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100vh;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.model-selection {
+    width: 100%;
+    border: 3px solid white;
+    padding: 3px;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.model-selection:hover {
+    border-color: #e7a117;
+    color: #e7a117;
+}
+
+.input-field {
+    font-size: 1.125rem /* 18px */;
+    line-height: 1.75rem /* 28px */;
+    padding: 0.5rem;
+    background-color: rgb(47 56 71);
+    color: white;
+    border-bottom: 2px solid white;
+    margin-bottom: 2px;
+}
+
+.input-field:hover {
+    border: none;
+    border-bottom: 2px solid #e7a117;
+}
+
+.input-field:focus {
+    margin-bottom: 0px;
+    outline: none;
+    border-bottom: 4px solid #c57f1e;
+}
+
+.std-label {
+    font-size: 1.5rem /* 18px */;
+    line-height: 1.75rem /* 28px */;
+    font-weight: 800;
+    color: #e7a117;
+}
+
+.tags-collection {
+    min-height: 40px;
+}
+
+.tag-element {
+    min-width: 20px;
+    color: white;
+    font-weight: 700;
+    background-color: #1b79dd;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 5px;
+    margin-right: 5px;
+    padding: 4px 8px;
+    border-radius: 30px;
+}
+
+.light-overlay {
+    background-color: rgba(255, 255, 255, 0.35);
+}
+
+.img-cont {
+    background: rgba(34, 40, 50, 1);
+}
+
+.upload-cont {
+    border-top: rgba(255, 255, 255, 1) 1px solid;
+}
+
+/* source: https://loading.io/css/ */
+.lds-dual-ring {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+}
+.lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid #fff;
+    border-color: #fff transparent #fff transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.blog-list-element:hover > .title {
+    color: #e7a117;
+}

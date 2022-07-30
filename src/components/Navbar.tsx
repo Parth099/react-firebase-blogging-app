@@ -1,9 +1,10 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 import { useStorage } from "../contexts/storageContext";
 import useModal from "../hooks/useModal";
-import Logout from "./auth/Logout";
+import Logout from "../pages/logout";
 
 /*
 Nav bar will contain the login and logout button as well as redirection
@@ -20,8 +21,11 @@ export default function Navbar() {
     const storageContext = useStorage();
 
     const isLoggedIn = authContext?.currentUser;
-    const navigate = useNavigate();
-    const location = useLocation();
+
+    const router = useRouter();
+    const navigate = (path: string) => {
+        router.push(path);
+    };
 
     //used to force a sign in
     useEffect(() => {
@@ -29,14 +33,14 @@ export default function Navbar() {
         if (!authContext?.firstLoadCompleted) {
             return;
         }
-        const pwd = location.pathname;
+        const pwd = router.pathname;
         if (!isLoggedIn && pwd != "/sign-in" && pwd != "/sign-up") {
             navigate("/sign-in");
         }
 
         //dpd array has location hook, useEffect is ran each time a new url loaded
         //dpd array has auth context, we will run this effect on a user change (sign-out)
-    }, [location, authContext]);
+    }, [router, authContext]);
 
     //give the user to close modal if they click outside of it
     const handleOverlayClicks = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -48,22 +52,22 @@ export default function Navbar() {
 
     return (
         <nav className="flex justify-between p-4 text-sp1 border-t-4 border-sp1 border-b-sp2 border-b-2 shadow-xl bg-sp4">
-            <Link to={"/"} className="header-font text-4xl font-bold">
+            <Link href={"/"} className="header-font text-4xl font-bold">
                 Blogging App
             </Link>
             <div className="button-container flex gap-8 text-white">
                 {!isLoggedIn /* render if no one is logged in */ && (
-                    <Link to={"/sign-in"} className="auth-btn self-center font-bold text-xl hover:text-sp1">
+                    <Link href={"/sign-in"} className="auth-btn self-center font-bold text-xl hover:text-sp1">
                         Sign in
                     </Link>
                 )}
                 {isLoggedIn /* render if  logged in */ && (
                     <>
-                        <Link to={"/create-blog-post"} className="auth-btn self-center font-bold text-xl hover:text-sp1">
+                        <Link href={"/create-blog-post"} className="auth-btn self-center font-bold text-xl hover:text-sp1">
                             Create a Blog Post
                         </Link>
                         {storageContext?.profileData && (
-                            <Link to={"/profile"} className="auth-btn self-center font-bold text-xl hover:text-sp1">
+                            <Link href={"/profile"} className="auth-btn self-center font-bold text-xl hover:text-sp1">
                                 My Profile
                             </Link>
                         )}
