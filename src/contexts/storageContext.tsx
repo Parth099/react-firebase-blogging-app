@@ -39,6 +39,7 @@ interface StorageContextObject {
     isUsernameAreadyUsed: (username: string) => Promise<boolean>;
     blogsRef: CollectionReference;
     getDocDataById: (id: string) => Promise<false | DocumentData>;
+    updateDocumentById: (id: string, updateInfo: {}) => Promise<void>;
 }
 const StorageContext = createContext<Nullable<StorageContextObject>>(null);
 
@@ -93,9 +94,16 @@ export function StorageProvider({ children }: ReactChildren) {
         return docs.size === 0;
     };
 
+    //returns the data given and ID
     const getDocDataById = async (id: string) => {
         const docRef = doc(database, "main:blogs", id);
         return await DocumentExists(docRef);
+    };
+
+    //updates a doc in firestore given a ID and a update object, it is kind of like useState
+    const updateDocumentById = async (id: string, updateInfo: {}) => {
+        const docRef = doc(database, "main:blogs", id);
+        return await updateDoc(docRef, updateInfo);
     };
 
     useEffect(() => {
@@ -156,6 +164,7 @@ export function StorageProvider({ children }: ReactChildren) {
         //we will not give a ref to the main:blogs/$email since this will produce FUN state errors
         blogsRef: collection(database, `main:blogs`),
         getDocDataById,
+        updateDocumentById,
     };
 
     return <StorageContext.Provider value={value}>{children}</StorageContext.Provider>;
