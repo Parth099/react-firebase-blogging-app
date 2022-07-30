@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import App from "./App";
 import "./index.css";
 
-//auth
 import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
 import CreateABlogPost from "./components/blog/CreateABlogPost";
@@ -13,7 +12,7 @@ import EditBlogPost from "./components/blog/EditBlogPost";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-        <BrowserRouter basename="/react-firebase-blogging-app">
+        <BrowserRouter basename="react-firebase-blogging-app">
             <Routes>
                 <Route path="/" element={<App />}>
                     <Route path="/sign-in" element={<SignIn />}></Route>

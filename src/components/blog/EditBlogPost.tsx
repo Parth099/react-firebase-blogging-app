@@ -38,7 +38,21 @@ export default function EditBlogPost() {
 
     //cancel model
     const [cancelModalStatus, cancelModalOpen, cancelModalClose] = useModal();
-    const handlePostEdit = () => {};
+    const handlePostEdit = () => {
+        const content = contentRef?.current?.value;
+
+        if (!content || !blogID) return;
+        if (!storageContext?.updateDocById) return;
+
+        storageContext
+            .updateDocById(blogID, {
+                content,
+                blogTags,
+            })
+            .then(() => {
+                navigate("/profile");
+            });
+    };
     const cancelEdit = () => {
         navigate("/profile");
     };

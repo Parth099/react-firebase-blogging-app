@@ -39,6 +39,7 @@ interface StorageContextObject {
     isUsernameAreadyUsed: (username: string) => Promise<boolean>;
     blogsRef: CollectionReference;
     getDocDataById: (id: string) => Promise<false | DocumentData>;
+    updateDocById: (id: string, updateInfo: {}) => Promise<void>;
 }
 const StorageContext = createContext<Nullable<StorageContextObject>>(null);
 
@@ -93,9 +94,16 @@ export function StorageProvider({ children }: ReactChildren) {
         return docs.size === 0;
     };
 
+    //gets doc by id
     const getDocDataById = async (id: string) => {
         const docRef = doc(database, "main:blogs", id);
         return await DocumentExists(docRef);
+    };
+
+    //updates doc by id
+    const updateDocById = async (id: string, updateInfo: {}) => {
+        const docRef = doc(database, "main:blogs", id);
+        return await updateDoc(docRef, updateInfo);
     };
 
     useEffect(() => {
@@ -152,10 +160,11 @@ export function StorageProvider({ children }: ReactChildren) {
         updatePfp,
         sendProfileDocUpdate,
         isUsernameAreadyUsed,
+        updateDocById,
+        getDocDataById,
 
         //we will not give a ref to the main:blogs/$email since this will produce FUN state errors
         blogsRef: collection(database, `main:blogs`),
-        getDocDataById,
     };
 
     return <StorageContext.Provider value={value}>{children}</StorageContext.Provider>;

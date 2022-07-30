@@ -50,7 +50,6 @@ export default function CreateABlogPost() {
 
         //all fields MUST be filled
         if (!title || !content || blogTags.length === 0) return;
-
         const createdBy = authContext?.currentUser?.email;
         if (!createdBy) return;
 
@@ -59,6 +58,7 @@ export default function CreateABlogPost() {
         const collectionRef = collection(database, "main:blogs");
 
         setSendingToDB(true);
+
         //promise.then().catch().then()
         //this pattern allows me to catch errors and also commit an action based on sucess or failure
         addDoc(collectionRef, {
@@ -70,9 +70,7 @@ export default function CreateABlogPost() {
             createdBy,
         })
             .then(() => {
-                //reroute to profile page (not been created yet)
-                //navigate("/");
-                console.log("submitted");
+                navigate("/profile");
             })
             .catch((e) => console.error(e))
             .then(() => {
