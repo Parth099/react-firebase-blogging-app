@@ -55,10 +55,20 @@ export default function EditBlogPost() {
                 navigate("/profile");
             });
     };
+
     const cancelEdit = () => {
         navigate("/profile");
     };
 
+    const handleDocDelete = () => {
+        if (!blogID) return;
+        if (!storageContext?.deleteDocById) return;
+
+        //init delete
+        storageContext.deleteDocById(blogID).then(() => {
+            navigate("/");
+        });
+    };
     return (
         <div className="create-blog flex justify-center">
             <section className="w-288">
@@ -91,6 +101,9 @@ export default function EditBlogPost() {
                 <div className="btn-container flex flex-row-reverse gap-2">
                     <button className="px-6 py-2 bg-sp1 mt-2 rounded-sm font-bold hover:bg-yellow-500" onClick={handlePostEdit}>
                         Submit Edits
+                    </button>
+                    <button className="px-6 py-2 bg-red-600 mt-2 rounded-sm font-bold hover:bg-red-500" onClick={handleDocDelete}>
+                        Delete
                     </button>
                     <button className="px-6 py-2 bg-red-600 mt-2 rounded-sm font-bold hover:bg-red-500" onClick={cancelModalOpen}>
                         Cancel

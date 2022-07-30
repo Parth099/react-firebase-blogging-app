@@ -1,6 +1,7 @@
 import {
     collection,
     CollectionReference,
+    deleteDoc,
     doc,
     DocumentData,
     DocumentReference,
@@ -41,6 +42,7 @@ interface StorageContextObject {
     getDocDataById: (id: string) => Promise<false | DocumentData>;
     updateDocById: (id: string, updateInfo: {}) => Promise<void>;
     getAllDocsFromCollectionName: (collectionName: string) => Promise<DocumentData[]>;
+    deleteDocById: (id: string) => Promise<void>;
 }
 
 //core context onject
@@ -112,8 +114,8 @@ export function StorageProvider({ children }: ReactChildren) {
 
     //see title
     const getAllDocsFromCollectionName = async (collectionName: string) => {
-        const ref = collection(database, collectionName);
-        const docs = await getDocs(ref);
+        const docRef = collection(database, collectionName);
+        const docs = await getDocs(docRef);
         const allDocs: DocumentData[] = [];
 
         //push all data from db into memory
@@ -123,6 +125,12 @@ export function StorageProvider({ children }: ReactChildren) {
         });
 
         return allDocs;
+    };
+
+    //delete via edit page
+    const deleteDocById = async (id: string) => {
+        const docRef = doc(database, "main:blogs", id);
+        return await deleteDoc(docRef);
     };
 
     useEffect(() => {
@@ -182,6 +190,7 @@ export function StorageProvider({ children }: ReactChildren) {
         updateDocById,
         getDocDataById,
         getAllDocsFromCollectionName,
+        deleteDocById,
 
         //we will not give a ref to the main:blogs/$email since this will produce FUN state errors
         blogsRef: collection(database, `main:blogs`),
