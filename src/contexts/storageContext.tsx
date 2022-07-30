@@ -40,9 +40,13 @@ interface StorageContextObject {
     blogsRef: CollectionReference;
     getDocDataById: (id: string) => Promise<false | DocumentData>;
     updateDocById: (id: string, updateInfo: {}) => Promise<void>;
+    getAllDocsFromCollectionName: (collectionName: string) => Promise<DocumentData[]>;
 }
+
+//core context onject
 const StorageContext = createContext<Nullable<StorageContextObject>>(null);
 
+//pattern to reduce imports
 export const useStorage = () => {
     return useContext(StorageContext);
 };
@@ -106,6 +110,21 @@ export function StorageProvider({ children }: ReactChildren) {
         return await updateDoc(docRef, updateInfo);
     };
 
+    //see title
+    const getAllDocsFromCollectionName = async (collectionName: string) => {
+        const ref = collection(database, collectionName);
+        const docs = await getDocs(ref);
+        const allDocs: DocumentData[] = [];
+
+        //push all data from db into memory
+        docs.forEach((doc) => {
+            const data = doc.data();
+            allDocs.push({ ...data, id: doc.id });
+        });
+
+        return allDocs;
+    };
+
     useEffect(() => {
         //if there is a user logged in
         if (authContext?.currentUser && authContext.currentUser.email) {
@@ -162,6 +181,7 @@ export function StorageProvider({ children }: ReactChildren) {
         isUsernameAreadyUsed,
         updateDocById,
         getDocDataById,
+        getAllDocsFromCollectionName,
 
         //we will not give a ref to the main:blogs/$email since this will produce FUN state errors
         blogsRef: collection(database, `main:blogs`),

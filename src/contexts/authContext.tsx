@@ -42,6 +42,7 @@ export function AuthProvider({ children }: ReactChildren) {
     const [currentUser, setCurrentUser] = useState<Nullable<FirebaseUser>>(null);
     const [firstLoadCompleted, setFirstLoadCompleted] = useState(false);
 
+    //update entire site on auth changes
     useEffect(() => {
         const unsub = onAuthStateChanged(auth, (firebaseUser) => {
             setCurrentUser(firebaseUser);
@@ -51,15 +52,13 @@ export function AuthProvider({ children }: ReactChildren) {
         return unsub;
     }, []);
 
-    //functions
+    //helper functions so we dont have to expose AUTH var
     const signIn = (email: string, password: string) => {
         return signInWithEmailAndPassword(auth, email, password);
     };
-
     const createAccount = (email: string, password: string) => {
         return createUserWithEmailAndPassword(auth, email, password);
     };
-
     const logOut = () => {
         return signOut(auth);
     };

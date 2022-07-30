@@ -38,6 +38,8 @@ export default function EditBlogPost() {
 
     //cancel model
     const [cancelModalStatus, cancelModalOpen, cancelModalClose] = useModal();
+
+    //sends an update with the new updates
     const handlePostEdit = () => {
         const content = contentRef?.current?.value;
 

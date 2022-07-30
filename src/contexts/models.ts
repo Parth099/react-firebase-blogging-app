@@ -5,7 +5,7 @@ export interface ReactChildren {
 export type Nullable<T> = T | null;
 
 //unused
-export interface BlogData {
+interface BlogData {
     title: string;
     content: string;
     blogTags: Array<string>;

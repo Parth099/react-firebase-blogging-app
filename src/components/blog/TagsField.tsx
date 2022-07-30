@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 
 interface TagProps {
     id: string;
-    tags: Array<string>;
+    tags: string[];
     setTags: any;
 }
 
