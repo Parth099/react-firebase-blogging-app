@@ -3,7 +3,7 @@ import React, { useRef } from "react";
 interface TagProps {
     id: string;
     tags: string[];
-    setTags: any;
+    setTags?: any;
 }
 
 const ENTERKEY = "Enter";
@@ -27,6 +27,7 @@ export default function TagsField(props: TagProps) {
     };
 
     const handleTagRemoval = (e: React.MouseEvent) => {
+        if (!props.setTags) return;
         //get span that called this event
         const target = e.target as HTMLSpanElement;
 
@@ -43,6 +44,7 @@ export default function TagsField(props: TagProps) {
 
     //add / rm for blogTags
     const addTag = (tagName: string) => {
+        if (!props.setTags) return;
         const tagExists = props.tags.findIndex((tag) => tag === tagName);
         //do not add dupe tags
         if (tagExists >= 0) return;
@@ -51,6 +53,7 @@ export default function TagsField(props: TagProps) {
     };
 
     const removeTag = (tagName: string) => {
+        if (!props.setTags) return;
         const newTags = [...props.tags];
         const rmIndex = newTags.findIndex((tag) => tag === tagName);
 
@@ -64,21 +67,25 @@ export default function TagsField(props: TagProps) {
 
     return (
         <div>
-            <input
-                type="text"
-                id={props.id}
-                className="input-field w-full"
-                placeholder="Type in tag names and hit enter"
-                onKeyDown={handleTagInput}
-            />
+            {props.setTags && (
+                <input
+                    type="text"
+                    id={props.id}
+                    className="input-field w-full"
+                    placeholder="Type in tag names and hit enter"
+                    onKeyDown={handleTagInput}
+                />
+            )}
             <div className="tags-collection mt-2">
                 {props.tags.map((value) => {
                     return (
                         <p className="tag-element" key={value}>
                             {value}
-                            <span className="ml-1 cursor-pointer" onClick={handleTagRemoval}>
-                                {"\u2716"}
-                            </span>
+                            {props.setTags && (
+                                <span className="ml-1 cursor-pointer" onClick={handleTagRemoval}>
+                                    {"\u2716"}
+                                </span>
+                            )}
                         </p>
                     );
                 })}

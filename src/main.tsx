@@ -10,6 +10,7 @@ import CreateABlogPost from "./components/blog/CreateABlogPost";
 import Profile from "./components/profile/Profile";
 import EditBlogPost from "./components/blog/EditBlogPost";
 import AllPosts from "./components/blog/AllPosts";
+import ViewPost from "./components/blog/ViewPost";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                     <Route path="/create-blog-post" element={<CreateABlogPost />}></Route>
                     <Route path="/profile" element={<Profile />}></Route>
                     <Route path="/edit-post/:blogID" element={<EditBlogPost />}></Route>
+                    <Route path="/blog-post/:blogID" element={<ViewPost />}></Route>
                 </Route>
             </Routes>
         </BrowserRouter>

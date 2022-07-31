@@ -43,6 +43,7 @@ interface StorageContextObject {
     updateDocById: (id: string, updateInfo: {}) => Promise<void>;
     getAllDocsFromCollectionName: (collectionName: string) => Promise<DocumentData[]>;
     deleteDocById: (id: string) => Promise<void>;
+    getCreatorData: (email: string) => Promise<false | DocumentData>;
 }
 
 //core context onject
@@ -133,6 +134,13 @@ export function StorageProvider({ children }: ReactChildren) {
         return await deleteDoc(docRef);
     };
 
+    //get someone else profile data
+    const getCreatorData = async (email: string) => {
+        const docRef = doc(database, "main:profiles", email);
+        return await DocumentExists(docRef);
+    };
+
+    //init a profile on NEW login
     useEffect(() => {
         //if there is a user logged in
         if (authContext?.currentUser && authContext.currentUser.email) {
@@ -181,6 +189,7 @@ export function StorageProvider({ children }: ReactChildren) {
         });
     }, [authContext]);
 
+    //obj that is global under the StorageContext.Provider
     const value: StorageContextObject = {
         profileData: profileData,
         getImageUrlFromStorage,
@@ -191,6 +200,7 @@ export function StorageProvider({ children }: ReactChildren) {
         getDocDataById,
         getAllDocsFromCollectionName,
         deleteDocById,
+        getCreatorData,
 
         //we will not give a ref to the main:blogs/$email since this will produce FUN state errors
         blogsRef: collection(database, `main:blogs`),
