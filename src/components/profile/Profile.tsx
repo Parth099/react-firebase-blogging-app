@@ -27,7 +27,7 @@ export default function Profile() {
         //if it really is an image (not SVG)
         if (!/image\/(png|jpg|jpeg)/.test(TYPE)) return;
 
-        const uuid = profileData!.profilePictureName;
+        const uuid = profileData!.uuid;
 
         storageContext!.updatePfp(FILE, uuid).then(() => {
             const email = authContext?.currentUser?.email;
