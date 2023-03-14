@@ -22,7 +22,7 @@
 
 .header-font::before,
 .header-font::after {
-    content: '"';
+    content: "";
 }
 /*fonts*/
 
